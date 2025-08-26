@@ -18,18 +18,18 @@ export default function AppRoutes(){
 
         <Route path="generos" element = {<IndiceGeneros></IndiceGeneros>}/>
         <Route path="/generos/crear" element = {<CrearGenero/>}/>
-        <Route path="/generos/editar" element = {<EditarGenero/>}/>
+        <Route path="/generos/editar/:id" element = {<EditarGenero/>}/>
 
         <Route path="/actores" element = {<IndiceActores/>}/>
         <Route path="/actores/crear" element = {<CrearActor/>}/>
-        <Route path="/actores/editar" element = {<EditarActor/>}/>
+        <Route path="/actores/editar/:id" element = {<EditarActor/>}/>
 
         <Route path="/cines" element= {<IndiceCines/>}/>
         <Route path="/cines/crear" element = {<EditarCine/>}/>
-        <Route path="/cines/editar" element = {<EditarCine/>}/>
+        <Route path="/cines/editar/:id" element = {<EditarCine/>}/>
 
         <Route path="/peliculas/crear" element = {<CrearPelicula/>}/>
-        <Route path="/peliculas/editar" element = {<EditarPelicula/>}/>
+        <Route path="/peliculas/editar/:id" element = {<EditarPelicula/>}/>
 
       </Routes>
     )
