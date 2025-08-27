@@ -11,29 +11,31 @@ import EditarCine from "./features/cines/componentes/EditarCine";
 import EditarPelicula from "./features/peliculas/componentes/EditarPelicula";
 import CrearPelicula from "./features/peliculas/componentes/CrearPelicula";
 import RutaNoEncontrada from "./componentes/RutaNoEncontrada";
+import FiltrarPeliculas from "./features/peliculas/componentes/FiltrarPeliculas";
 
-export default function AppRoutes(){
-    return (
-      <Routes>
-        <Route path="/" element={<LandingPage/>}></Route>
+export default function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />}></Route>
 
-        <Route path="generos" element = {<IndiceGeneros></IndiceGeneros>}/>
-        <Route path="/generos/crear" element = {<CrearGenero/>}/>
-        <Route path="/generos/editar/:id" element = {<EditarGenero/>}/>
+      <Route path="generos" element={<IndiceGeneros></IndiceGeneros>} />
+      <Route path="/generos/crear" element={<CrearGenero />} />
+      <Route path="/generos/editar/:id" element={<EditarGenero />} />
 
-        <Route path="/actores" element = {<IndiceActores/>}/>
-        <Route path="/actores/crear" element = {<CrearActor/>}/>
-        <Route path="/actores/editar/:id" element = {<EditarActor/>}/>
+      <Route path="/actores" element={<IndiceActores />} />
+      <Route path="/actores/crear" element={<CrearActor />} />
+      <Route path="/actores/editar/:id" element={<EditarActor />} />
 
-        <Route path="/cines" element= {<IndiceCines/>}/>
-        <Route path="/cines/crear" element = {<EditarCine/>}/>
-        <Route path="/cines/editar/:id" element = {<EditarCine/>}/>
+      <Route path="/cines" element={<IndiceCines />} />
+      <Route path="/cines/crear" element={<EditarCine />} />
+      <Route path="/cines/editar/:id" element={<EditarCine />} />
 
-        <Route path="/peliculas/crear" element = {<CrearPelicula/>}/>
-        <Route path="/peliculas/editar/:id" element = {<EditarPelicula/>}/>
+      <Route path="/peliculas/crear" element={<CrearPelicula />} />
+      <Route path="/peliculas/editar/:id" element={<EditarPelicula />} />
 
-        <Route path="*" element={<RutaNoEncontrada/>} />
+      <Route path="/peliculas/filtrar" element={<FiltrarPeliculas />} />
+      <Route path="*" element={<RutaNoEncontrada />} />
 
-      </Routes>
-    )
+    </Routes>
+  )
 }
