@@ -2,12 +2,17 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import type ActorCreacion from "../modelos/ActorCreacion.model";
 import Boton from "../../../componentes/Boton";
 import { NavLink } from "react-router";
+import * as yup from "yup";
+import { fechaNoPuedeSerFutura, primeraLetraMayuscula } from "../../../validaciones/Validaciones";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function FormularioActor(props: FormularioActorProps) {
 
     const {
         register, handleSubmit, formState: { errors, isValid, isSubmitting }
     } = useForm<ActorCreacion>({
+        resolver: yupResolver(reglasDeValidacion),
+        mode: 'onChange',
         defaultValues: props.modelo ?? { nombre: '' }
     })
 
@@ -16,19 +21,19 @@ export default function FormularioActor(props: FormularioActorProps) {
             <div className="form-group">
                 <label htmlFor="nombre">Nombre</label>
                 <input type="text" id="nombre" autoComplete="off" className="form-control"{...register('nombre')} />
-                {errors.nombre && <p className="error">{ }errors.nombre.message</p>}
+                {errors.nombre && <p className="error">{errors.nombre.message}</p>}
             </div>
 
             <div className="form-group">
                 <label htmlFor="fechaNacimiento">Fecha de Nacimiento</label>
                 <input type="date" id="fechaNacimiento" autoComplete="off" className="form-control"
                     {...register('fechaNacimiento')} />
-                {errors.fechaNacimiento && <p className="error">{ }errors.fechaNacimiento.message</p>}
+                {errors.fechaNacimiento && <p className="error">{errors.fechaNacimiento.message}</p>}
             </div>
 
             <div className="mt-2">
                 <Boton type="submit" disabled={!isValid || isSubmitting}>
-                    {isSubmitting?"Enviando...":"Enviar"}
+                    {isSubmitting ? "Enviando..." : "Enviar"}
                 </Boton>
                 <NavLink className={"btn btn-secondary ms-2"} to={"/actores"}>Cancelar</NavLink>
             </div>
@@ -40,3 +45,8 @@ interface FormularioActorProps {
     modelo?: ActorCreacion;
     onSubmit: SubmitHandler<ActorCreacion>
 }
+
+const reglasDeValidacion = yup.object({
+    nombre: yup.string().required('El nombre es obligatorio').test(primeraLetraMayuscula()),
+    fechaNacimiento: yup.string().required('La fecha de nacimiento es obligatoria').test(fechaNoPuedeSerFutura())
+})
