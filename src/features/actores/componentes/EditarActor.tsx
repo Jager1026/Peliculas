@@ -13,7 +13,7 @@ export default function EditarActor() {
 
     useEffect(() => {
         const timerId = setTimeout(() => {
-            setModelo({ nombre: 'Tom ' + id, fechaNacimiento: '2022-11-23' })
+            setModelo({ nombre: 'Tom ' + id, fechaNacimiento: '2022-11-23', foto:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Elizabeth_Olsen_at_the_2024_Toronto_International_Film_Festival_3_%28cropped%29.jpg/800px-Elizabeth_Olsen_at_the_2024_Toronto_International_Film_Festival_3_%28cropped%29.jpg' })
         }, 1000);
 
         return () => clearTimeout(timerId)
