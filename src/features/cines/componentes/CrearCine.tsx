@@ -1,5 +1,20 @@
-export default function CrearCines(){
-    return(
-        <h3>Crear Cine</h3>
+import type { SubmitHandler } from "react-hook-form";
+import FormularioCine from "./FormularioCine";
+import type CineCreacion from "../modelos/CineCreacion.model";
+
+export default function CrearCines() {
+
+    const onSubmit: SubmitHandler<CineCreacion> = async (data) => {
+        console.log("Creando Cine...")
+        await new Promise(resolve => setTimeout(resolve,500));
+        console.log(data);
+    }
+
+    return (
+        <>
+            <h3>Crear Cine</h3>
+            <FormularioCine onSubmit={onSubmit} />
+        </>
+
     )
 }
