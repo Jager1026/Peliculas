@@ -11,7 +11,7 @@ export default function EditarCine(){
 
     useEffect(()=>{
         setTimeout(() =>{
-            setModelo({nombre: 'Sambil'})
+            setModelo({nombre: 'Unicentro Mall Edicion', latitud:4.540418387367919, longitud: -75.66571354867393})
         }, 1000)
     },[id]) ;
 

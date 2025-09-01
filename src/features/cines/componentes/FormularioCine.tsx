@@ -6,13 +6,29 @@ import { primeraLetraMayuscula } from "../../../validaciones/Validaciones";
 import Boton from "../../../componentes/Boton";
 import { NavLink } from "react-router";
 import Mapa from "../../../componentes/Mapa/Mapa";
+import type Coordernada from "../../../componentes/Mapa/Coordernada.model";
 
 export default function FormularioCine(props: FormularioCineProps) {
-    const { register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<CineCreacion>({
+    const { register, handleSubmit,
+        setValue,
+         formState: { errors, isValid, isSubmitting } } = useForm<CineCreacion>({
         resolver: yupResolver(reglasDeValidacion),
         mode: 'onChange',
         defaultValues: props.modelo ?? { nombre: ('') }
     })
+
+    function transformarCoordenadas(): Coordernada[]|undefined{
+        if(props.modelo){
+            const respuesta: Coordernada = {
+                lat:props.modelo.latitud,
+                lng:props.modelo.longitud
+            }
+            return [respuesta];
+        }
+
+        return undefined;
+
+    }
 
     return (
         <>
@@ -25,7 +41,16 @@ export default function FormularioCine(props: FormularioCineProps) {
                 </div>
 
                 <div className="mt-4">
-                    <Mapa />
+                    <Mapa 
+                    coordernadas={transformarCoordenadas()}
+                    lugarSeleccionado={coordenada =>{
+                        setValue('latitud',coordenada.lat, {
+                            shouldValidate: true
+                        });
+                           setValue('longitud',coordenada.lng, {
+                            shouldValidate: true
+                        })
+                    }}/>
                 </div>
 
                 <div className="mt-2">
@@ -45,5 +70,7 @@ interface FormularioCineProps {
 
 const reglasDeValidacion = yup.object({
     nombre: yup.string().required('El nombre es obligatorio')
-        .test(primeraLetraMayuscula())
+        .test(primeraLetraMayuscula()),
+        latitud: yup.number().required(),
+        longitud: yup.number().required()
 })
