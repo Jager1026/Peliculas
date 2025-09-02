@@ -5,6 +5,7 @@ import FormularioPelicula from "./FormularioPelicula";
 import type { SubmitHandler } from "react-hook-form";
 import Cargando from "../../../componentes/Cargando";
 import type Genero from "../../generos/modelos/Genero.model";
+import type Cine from "../../actores/modelos/Cine.model";
 
 export default function EditarPelicula() {
     const [modelo, setModelo] = useState<PeliculaCreacion | undefined>(undefined)
@@ -30,6 +31,12 @@ export default function EditarPelicula() {
         { id: 1, nombre: 'Accion' },
         { id: 3, nombre: 'Drama' }];
 
+    const cinesSeleccionados: Cine[] = [{ id: 1, nombre: 'Unicentro Mall', latitud: 0, longitud: 0 }];
+    const cinesNoSeleccionados: Cine[] = [
+        { id: 2, nombre: 'Plaza Flora Mall', latitud: 1, longitud: 1 },
+        { id: 3, nombre: 'San sur plaza', latitud: 2, longitud: 2 }
+    ]
+
 
     return (
         <>
@@ -37,6 +44,8 @@ export default function EditarPelicula() {
             {modelo ? <FormularioPelicula modelo={modelo} onSubmit={onSubmit}
                 generosNoSeleccionados={generosNoSeleccionados}
                 generosSeleccionados={generosSeleccionados}
+                cinesSeleccionados={cinesSeleccionados}
+                cinesNoSeleccionados={cinesNoSeleccionados}
             /> : <Cargando />}
         </>
     )

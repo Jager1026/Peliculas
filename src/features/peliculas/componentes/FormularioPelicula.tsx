@@ -9,6 +9,7 @@ import SelectorMultiple from "../../../componentes/SelectorMultiple/SelectorMult
 import type SelectorMultipleModel from "../../../componentes/SelectorMultiple/SelectorMultiple.model";
 import { useState } from "react";
 import type Genero from "../../generos/modelos/Genero.model";
+import type Cine from "../../actores/modelos/Cine.model";
 
 export default function FormularioPelicula(props: FormularioPeliculaProps) {
     const {
@@ -20,19 +21,25 @@ export default function FormularioPelicula(props: FormularioPeliculaProps) {
         defaultValues: props.modelo ?? { titulo: '' }
     })
 
-    const imagenActualURL: string | undefined =props.modelo?.poster ? props.modelo.poster as string : undefined;
+    const imagenActualURL: string | undefined = props.modelo?.poster ? props.modelo.poster as string : undefined;
 
-    const mapear = (arreglo: {id: number, nombre: string }[]): SelectorMultipleModel[] => {
+    const mapear = (arreglo: { id: number, nombre: string }[]): SelectorMultipleModel[] => {
         return arreglo.map(valor => {
-            return {llave: valor.id , descripcion: valor.nombre}
+            return { llave: valor.id, descripcion: valor.nombre }
         })
     }
 
-    const [generosSeleccionados,setGenerosSeleccionados] = useState(mapear(props.generosSeleccionados)); 
-    const [generosNoSeleccionados,setGenerosNoSeleccionados] = useState(mapear(props.generosNoSeleccionados)); 
+    const [generosSeleccionados, setGenerosSeleccionados] = useState(mapear(props.generosSeleccionados));
+    const [generosNoSeleccionados, setGenerosNoSeleccionados] = useState(mapear(props.generosNoSeleccionados));
+
+    const [cinesSeleccionados, setCinesSeleccionados] = useState(mapear(props.cinesSeleccionados));
+    const [cinesNoSeleccionados, setCinesNoSeleccionados] = useState(mapear(props.cinesNoSeleccionados));
+
 
     const onSubmit: SubmitHandler<PeliculaCreacion> = (data) => {
         data.generosIds = generosSeleccionados.map(x => x.llave);
+        data.cinesIds = cinesSeleccionados.map(x => x.llave);
+        
         props.onSubmit(data);
     }
 
@@ -66,10 +73,19 @@ export default function FormularioPelicula(props: FormularioPeliculaProps) {
                 <div className="form-group">
                     <label>Generos</label>
                     <SelectorMultiple seleccionados={generosSeleccionados} noSeleccionados={generosNoSeleccionados}
-                    onChange={(seleccionados, noSeleccionados) => {
-                        setGenerosSeleccionados(seleccionados);
-                        setGenerosNoSeleccionados(noSeleccionados)
-                    }}/>
+                        onChange={(seleccionados, noSeleccionados) => {
+                            setGenerosSeleccionados(seleccionados);
+                            setGenerosNoSeleccionados(noSeleccionados)
+                        }} />
+                </div>
+
+                <div className="form-group">
+                    <label>Cines</label>
+                    <SelectorMultiple seleccionados={cinesSeleccionados} noSeleccionados={cinesNoSeleccionados}
+                        onChange={(seleccionados, noSeleccionados) => {
+                            setCinesSeleccionados(seleccionados);
+                            setCinesNoSeleccionados(noSeleccionados)
+                        }} />
                 </div>
 
                 <div className="mt-2">
@@ -87,7 +103,10 @@ interface FormularioPeliculaProps {
     modelo?: PeliculaCreacion;
     onSubmit: SubmitHandler<PeliculaCreacion>;
     generosSeleccionados: Genero[];
-    generosNoSeleccionados : Genero[];
+    generosNoSeleccionados: Genero[];
+    cinesSeleccionados: Cine[];
+    cinesNoSeleccionados: Cine[];
+
 }
 
 const reglasDeValidacion = yup.object({
