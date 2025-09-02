@@ -10,6 +10,7 @@ import type SelectorMultipleModel from "../../../componentes/SelectorMultiple/Se
 import { useState } from "react";
 import type Genero from "../../generos/modelos/Genero.model";
 import type Cine from "../../actores/modelos/Cine.model";
+import TypeaheadActores from "./TypeaheadActores";
 
 export default function FormularioPelicula(props: FormularioPeliculaProps) {
     const {
@@ -86,6 +87,10 @@ export default function FormularioPelicula(props: FormularioPeliculaProps) {
                             setCinesSeleccionados(seleccionados);
                             setCinesNoSeleccionados(noSeleccionados)
                         }} />
+                </div>
+
+                <div className="form-group">
+                    <TypeaheadActores/>
                 </div>
 
                 <div className="mt-2">
