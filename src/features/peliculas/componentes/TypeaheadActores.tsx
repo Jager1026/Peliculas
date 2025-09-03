@@ -2,7 +2,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import type ActorPelicula from "../modelos/ActorPelicula";
 import type { Option } from "react-bootstrap-typeahead/types/types";
 
-export default function TypeaheadActores() {
+export default function TypeaheadActores(props: TypeaheadActoresProps) {
 
     const actores: ActorPelicula[] = [{
         id: 1,
@@ -31,7 +31,10 @@ export default function TypeaheadActores() {
             <Typeahead
                 id="typeahead"
                 onChange={(actores: Option[]) => {
-
+                    const actorSeleccionado = actores[0] as ActorPelicula;
+                    if (props.actores.findIndex(x => x.id === actorSeleccionado.id) === -1) {
+                        props.onAdd([...props.actores, actorSeleccionado]);
+                    }
                 }}
 
                 options={actores}
@@ -55,12 +58,56 @@ export default function TypeaheadActores() {
                                     width: '64px',
                                     marginRight: '10px'
                                 }} />
-                                <span>{actor.nombre}</span>
-                        </> 
+                            <span>{actor.nombre}</span>
+                        </>
                     )
                 }}
             />
+
+            <ul className="list-group">
+                {props.actores.map(actor => (
+                    <li
+                        className="listo-group-item d-flex align-items-center"
+                        key={actor.id}
+                    >
+                        <div style={{ width: '70px' }}>
+                            <img style={{ height: '60px' }}
+                                src={actor.foto}
+                                alt={`foto ${actor.nombre}`}
+                            />
+                        </div>
+
+                        <div style={{ width: '150px', marginLeft: '1rem' }}>
+                            {actor.nombre}
+                        </div>
+
+                        <div className="flex-grow-1 mx-3">
+                            <input className="form-control"
+                                placeholder="Personaje interpretado" type="text" value={actor.personaje}
+                                onChange={e => {
+                                    props.onCambioPersonaje(actor.id, e.currentTarget.value)
+                                }} />
+                        </div>
+
+                        <span role="button" className="badge text-bg-secondary"
+                        onClick={()=>props.onRemove(actor)}
+                        >X</span>
+
+                    </li>
+                )
+
+                )}
+
+            </ul>
+
         </>
 
     )
+}
+
+interface TypeaheadActoresProps {
+    actores: ActorPelicula[];
+    onAdd(actores: ActorPelicula[]): void;
+    onCambioPersonaje(id: number, personaje: string): void;
+    onRemove(actor: ActorPelicula):void;
 }

@@ -11,6 +11,7 @@ import { useState } from "react";
 import type Genero from "../../generos/modelos/Genero.model";
 import type Cine from "../../actores/modelos/Cine.model";
 import TypeaheadActores from "./TypeaheadActores";
+import type ActorPelicula from "../modelos/ActorPelicula";
 
 export default function FormularioPelicula(props: FormularioPeliculaProps) {
     const {
@@ -36,11 +37,14 @@ export default function FormularioPelicula(props: FormularioPeliculaProps) {
     const [cinesSeleccionados, setCinesSeleccionados] = useState(mapear(props.cinesSeleccionados));
     const [cinesNoSeleccionados, setCinesNoSeleccionados] = useState(mapear(props.cinesNoSeleccionados));
 
+    const [actoresSeleccionados, setActoresSelecionados] = useState(props.actoresSeleccionados);
+
 
     const onSubmit: SubmitHandler<PeliculaCreacion> = (data) => {
         data.generosIds = generosSeleccionados.map(x => x.llave);
         data.cinesIds = cinesSeleccionados.map(x => x.llave);
-        
+        data.actores = actoresSeleccionados;
+
         props.onSubmit(data);
     }
 
@@ -90,7 +94,24 @@ export default function FormularioPelicula(props: FormularioPeliculaProps) {
                 </div>
 
                 <div className="form-group">
-                    <TypeaheadActores/>
+                    <TypeaheadActores actores={actoresSeleccionados}
+                        onAdd={actores => {
+                            setActoresSelecionados(actores);
+                        }} 
+                        onRemove={actor => {
+                            const actores = actoresSeleccionados.filter(x =>x !== actor);
+                            setActoresSelecionados(actores)
+                        }}
+
+                        onCambioPersonaje={(id, personaje)=> {
+                            const indice = actoresSeleccionados.findIndex(x => x.id === id);
+
+                            const actores = [...actoresSeleccionados];
+                            actores[indice].personaje = personaje;
+                            setActoresSelecionados(actores);
+                        }}
+
+                        />
                 </div>
 
                 <div className="mt-2">
@@ -111,6 +132,7 @@ interface FormularioPeliculaProps {
     generosNoSeleccionados: Genero[];
     cinesSeleccionados: Cine[];
     cinesNoSeleccionados: Cine[];
+    actoresSeleccionados: ActorPelicula[];
 
 }
 

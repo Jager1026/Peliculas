@@ -6,6 +6,7 @@ import type { SubmitHandler } from "react-hook-form";
 import Cargando from "../../../componentes/Cargando";
 import type Genero from "../../generos/modelos/Genero.model";
 import type Cine from "../../actores/modelos/Cine.model";
+import type ActorPelicula from "../modelos/ActorPelicula";
 
 export default function EditarPelicula() {
     const [modelo, setModelo] = useState<PeliculaCreacion | undefined>(undefined)
@@ -37,6 +38,13 @@ export default function EditarPelicula() {
         { id: 3, nombre: 'San sur plaza', latitud: 2, longitud: 2 }
     ]
 
+    const actoresSeleccionados: ActorPelicula[] = [{
+        id: 1,
+        nombre: 'Tom Holland',
+        personaje: 'Peter Parker',
+        foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Tom_Holland_during_pro-am_Wentworth_golf_club_2023-2.jpg/330px-Tom_Holland_during_pro-am_Wentworth_golf_club_2023-2.jpg'
+    }]
+
 
     return (
         <>
@@ -46,6 +54,7 @@ export default function EditarPelicula() {
                 generosSeleccionados={generosSeleccionados}
                 cinesSeleccionados={cinesSeleccionados}
                 cinesNoSeleccionados={cinesNoSeleccionados}
+                actoresSeleccionados={actoresSeleccionados}
             /> : <Cargando />}
         </>
     )

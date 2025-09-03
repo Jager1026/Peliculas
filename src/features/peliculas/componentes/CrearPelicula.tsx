@@ -32,6 +32,7 @@ export default function CrearPelicula() {
                 generosNoSeleccionados={generosNoSeleccionados}
                 cinesSeleccionados={cinesSeleccionados}
                 cinesNoSeleccionados={cinesNoSeleccionados}
+                actoresSeleccionados={[]}
                 ></FormularioPelicula>
         </>
 
