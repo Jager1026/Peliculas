@@ -1,6 +1,7 @@
 import { Typeahead } from "react-bootstrap-typeahead";
 import type ActorPelicula from "../modelos/ActorPelicula";
 import type { Option } from "react-bootstrap-typeahead/types/types";
+import { useState } from "react";
 
 export default function TypeaheadActores(props: TypeaheadActoresProps) {
 
@@ -24,6 +25,27 @@ export default function TypeaheadActores(props: TypeaheadActoresProps) {
     }]
 
     const seleccion: ActorPelicula[] = [];
+
+    const [elementoArrastrado, setElementoArrastrado] = useState<ActorPelicula | undefined>(undefined);
+
+    const manejarDragStart = (actor: ActorPelicula) => {
+        setElementoArrastrado(actor);
+    }
+
+    const manejearDragOver = (actor: ActorPelicula) => {
+        if (!elementoArrastrado || actor.id === elementoArrastrado.id) {
+            return;
+        }
+
+        const actores = [...props.actores];
+        const indiceDesde = actores.findIndex(x => x.id === elementoArrastrado.id);
+        const indiceHasta = actores.findIndex(x => x.id === actor.id);
+
+        if (indiceDesde !== -1 && indiceHasta !== -1) {
+            [actores[indiceDesde], actores[indiceHasta]] = [actores[indiceHasta], actores[indiceDesde]];
+            props.onAdd(actores)
+        }
+    }
 
     return (
         <>
@@ -67,7 +89,10 @@ export default function TypeaheadActores(props: TypeaheadActoresProps) {
             <ul className="list-group">
                 {props.actores.map(actor => (
                     <li
-                        className="listo-group-item d-flex align-items-center"
+                        draggable={true}
+                        onDragStart={() => manejarDragStart(actor)}
+                        onDragOver={() => manejearDragOver(actor)}
+                        className="list-group-item d-flex align-items-center"
                         key={actor.id}
                     >
                         <div style={{ width: '70px' }}>
@@ -90,7 +115,7 @@ export default function TypeaheadActores(props: TypeaheadActoresProps) {
                         </div>
 
                         <span role="button" className="badge text-bg-secondary"
-                        onClick={()=>props.onRemove(actor)}
+                            onClick={() => props.onRemove(actor)}
                         >X</span>
 
                     </li>
@@ -109,5 +134,5 @@ interface TypeaheadActoresProps {
     actores: ActorPelicula[];
     onAdd(actores: ActorPelicula[]): void;
     onCambioPersonaje(id: number, personaje: string): void;
-    onRemove(actor: ActorPelicula):void;
+    onRemove(actor: ActorPelicula): void;
 }
