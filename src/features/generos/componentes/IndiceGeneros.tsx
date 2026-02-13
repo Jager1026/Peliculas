@@ -1,86 +1,39 @@
-import { useNavigate } from "react-router";
-import Boton from "../../../componentes/Boton";
-import ListadoGenerico from "../../../componentes/ListadoGenerico";
-import Paginacion from "../../../componentes/Paginacion";
-import Cargando from "../../../componentes/Cargando";
-import { useGeneros } from "../hooks/useGeneros";
-import clienteAPI from "../../../api/clienteAxios";
-import confirmar from "../../../utils/confirmar";
+import type Genero from "../modelos/Genero.model";
+import IndiceEntidades from "../../../componentes/IndiceEntidades";
+import {useEntidades} from "../../../hooks/useEntidades";
 
 export default function IndiceGeneros() {
-    const navigate = useNavigate();
 
-    const { cargando, pagina, recordsPorPagina, cantidadTotalRegistros, setPagina, setRecordsPorPagina, generos,
-        cargarRegistros }
-        = useGeneros();
-
-    const Borrar = async (id: number) => {
-        try {
-            await clienteAPI.delete(`/generos/${id}`);
-            if (pagina == 1) {
-                cargarRegistros();
-            }
-            else {
-                setPagina(1);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    const entidadesHook
+        = useEntidades<Genero>(`/generos`);
 
     return (
         <>
-            <h3>Generos</h3>
-            <div>
-                <Boton onClick={() => navigate('/generos/crear')}>Crear Género</Boton>
-            </div>
-
-            {cargando ? <Cargando /> : <div className="mt-4">
-
-                <div className="mb-2">
-                    <Paginacion paginaActual={pagina} registrosPorPagina={recordsPorPagina}
-                        cantidadTotalRegistros={cantidadTotalRegistros}
-                        registrosPorPaginaOpciones={[5, 10, 50]}
-                        onCambioPaginacion={(pagina, recordsPorPagina) => {
-                            setPagina(pagina);
-                            setRecordsPorPagina(recordsPorPagina)
-                        }} />
-                </div>
-
-                <ListadoGenerico listado={generos}>
-                    <table className="table table-hover align-middle shadow-sm border rounded overflow-hidden">
-                        <thead>
-                            <tr>
-                                <th scope="col">
-                                    Nombre
-                                </th>
-                                <th scope="col" className="text-end">
-                                    Acciones
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {generos?.map(genero => <tr key={genero.id}>
-                                <td>{genero.nombre}</td>
-                                <td className="text-end">
-                                    <Boton
-                                        onClick={() => navigate(`/generos/editar/${genero.id}`)}
-                                        className="btn btn-sm btn-outline-primary me-2">
-                                        <i className="bi bi-pencil me-1"></i> Editar
-                                    </Boton>
-
-                                    <Boton
-                                        onClick={()=>confirmar(()=>Borrar(genero.id))} 
-                                        className="btn btn-sm btn-outline-danger">
-                                        <i className="bi bi-trash me-1"></i> Borrar
-                                    </Boton>
-                                </td>
-                            </tr>)}
-                        </tbody>
-                    </table>
-                </ListadoGenerico>
-            </div>}
-
+            <IndiceEntidades<Genero>
+            titulo="Géneros" nombreEntidad="Género" url="/generos"
+            urlCrear="/generos/crear" {...entidadesHook}
+            >
+                {(generos, botones) => <>
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                Nombre
+                            </th>
+                            <th scope="col" className="text-end">
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {generos?.map(genero => <tr key={genero.id}>
+                            <td>{genero.nombre}</td>
+                            <td className="text-end">
+                                {botones(`/generos/editar/${genero.id}`,genero.id)}
+                            </td>
+                        </tr>)}
+                    </tbody>
+                </>}
+            </IndiceEntidades>
 
         </>
     )
