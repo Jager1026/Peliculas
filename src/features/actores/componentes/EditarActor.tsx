@@ -30,7 +30,7 @@ export default function EditarActor() {
         })
     }, [id])
 
-    const onSubmit: SubmitHandler<ActorCreacion> = async (data) => {
+    const onSubmit: SubmitHandler<ActorCreacion> = async (data) => { 
         try{
             await clienteAPI.putForm(`actores/${id}`, data);
             navigate ('/sctores');
